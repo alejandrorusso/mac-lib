@@ -1,0 +1,11 @@
+resolver: lts-21.25
+
+packages:
+- .
+# - Examples
+
+# extra-deps:
+# - failure-0.1.2
+# - http-wget-0.6.2.3
+
+# allow-newer: True

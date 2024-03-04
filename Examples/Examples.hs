@@ -4,7 +4,7 @@
 {-# LANGUAGE Safe #-}
 
 -- | Example secure computations involving pure values and side-effects. To see how to run the computationts defined here, please check the module "SafeExample".
-module Examples where
+module Examples.Examples where
 
 import MAC.MAC
 import MAC.Lattice

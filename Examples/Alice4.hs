@@ -17,13 +17,16 @@ import qualified Examples.Bob4 as Bob
 -}
 
 password :: IO String
-password = do wgetMem <- runMAC $ Bob.memMAC wgetMAC
-              try wgetMem
+password = do
+  wgetMem <- runMAC $ Bob.memMAC wgetMAC
+  try wgetMem
 
-try wget= do putStr "Please, select your password:"
-             pass <- getLine
-             lbool <- runMAC $ (label pass :: MAC L (Labeled H String))
-                     >>= Bob.common_pass wget
-             let MkId b = unRes lbool
-             if b then putStrLn "Your password is too common!" >> (try wget)
-             else return pass
+try wget = do
+  putStr "Please, select your password:"
+  pass <- getLine
+  lbool <- runMAC $ Bob.common_pass wget =<< (label pass :: MAC L (Labeled H String))
+  let MkId b = unRes lbool
+  if b then do
+      putStrLn "Your password is too common!"
+      try wget
+    else return pass

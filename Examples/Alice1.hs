@@ -1,4 +1,5 @@
 {-# LANGUAGE Trustworthy #-}
+
 module Examples.Alice1 where
 
 import MAC.Lattice
