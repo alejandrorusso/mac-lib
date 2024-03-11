@@ -43,27 +43,63 @@ extra-source-files:
      Examples/MACWget.hs
 
 library
-  build-depends:       base >= 4.7 && < 5, network >= 2.6 && < 3, transformers
+  build-depends:       base >= 4.7 && < 5, network >= 2.6 && < 4, transformers
 
+  default-language:    Haskell98
   default-extensions:  MultiParamTypeClasses
   other-extensions:    Safe, Trustworthy
 
-  default-language: Haskell98
+  exposed-modules:
+       MAC.Lattice
+       MAC.MAC
+       MAC.Control
+       MAC.Exception
+       MAC.Ref
+       MAC.MVar
+       MAC.Labeled
+       MAC.Effects
+       -- Should not be exported, but some examples use it.
+       MAC.Core
+
+library mac-examples
+  build-depends:
+      base
+    , http-conduit
+    , mac
+    , split
+    , utf8-string
+
+  default-language:    Haskell98
+  default-extensions:  MultiParamTypeClasses
+  other-extensions:    Safe, Trustworthy
 
   exposed-modules:
-       MAC.Lattice,
-       MAC.MAC,
-       MAC.Control,
-       MAC.Exception,
-       MAC.Ref,
-       MAC.MVar,
-       MAC.Labeled
-       MAC.Core,
-       MAC.Effects
+      Examples.Alice0
+      Examples.Alice1
+      Examples.Alice2
+      Examples.Alice3
+      Examples.Alice4
+      Examples.Bob0
+      Examples.Bob1
+      Examples.Bob2
+      Examples.Bob3
+      Examples.Bob4
+      Examples.Examples
+      Examples.MACWget
 
   other-modules:
+       MAC.Lattice
+       MAC.MAC
+       MAC.Control
+       MAC.Exception
+       MAC.Ref
+       MAC.MVar
+       MAC.Labeled
+       MAC.Effects
+       MAC.Core
+
 
 
 Source-repository head
   Type:     git
-  Location: http://russo@bitbucket.org/russo/mac-lib.git
+  Location: https://bitbucket.org/russo/mac-lib
