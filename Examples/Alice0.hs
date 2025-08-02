@@ -1,6 +1,7 @@
 module Examples.Alice0 where
 
 import qualified Examples.Bob0 as Bob
+
 type Pass = String
 
 {-
@@ -18,13 +19,13 @@ type Pass = String
 
 -}
 
-
 password :: IO Pass
 password = do
-  putStr "Please, select your password:"
-  pass <- getLine
-  b <- Bob.common_pass pass
-  if b then do
-      putStrLn "Your password is too common!"
-      password
-    else return pass
+    putStr "Please, select your password:"
+    pass <- getLine
+    b <- Bob.common_pass pass
+    if b
+        then do
+            putStrLn "Your password is too common!"
+            password
+        else return pass

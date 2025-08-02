@@ -1,30 +1,28 @@
 {-# LANGUAGE Trustworthy #-}
 
 -- | Labeled expressions.
-module MAC.Labeled
-    (
-       Labeled ()
-     , Id (MkId, unId)
-     , label
-     , unlabel
-    )
-
+module MAC.Labeled (
+    Labeled (),
+    Id (MkId, unId),
+    label,
+    unlabel,
+)
 where
 
-import MAC.Lattice
-import MAC.Core (MAC(), Res())
+import MAC.Core (MAC (), Res ())
 import MAC.Effects
+import MAC.Lattice
 
 -- | Type denoting values of type @a@
-newtype Id a = MkId { unId :: a }
+newtype Id a = MkId {unId :: a}
 
 -- | Labeled expressions
 type Labeled l a = Res l (Id a)
 
 -- | Creation of labeled expressions
-label :: Less l l' => a -> MAC l (Labeled l' a)
+label :: (Less l l') => a -> MAC l (Labeled l' a)
 label = create . return . MkId
 
 -- | Observing labeled expressions
-unlabel :: Less l' l => Labeled l' a -> MAC l a
+unlabel :: (Less l' l) => Labeled l' a -> MAC l a
 unlabel = readdown (return . unId)

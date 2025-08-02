@@ -1,15 +1,14 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-
 {-# LANGUAGE Safe #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 -- | Example secure computations involving pure values and side-effects. To see how to run the computationts defined here, please check the module "SafeExample".
 module Examples.Examples where
 
-import MAC.MAC
-import MAC.Lattice
-import MAC.Labeled
 import MAC.Control
+import MAC.Labeled
+import MAC.Lattice
+import MAC.MAC
 
 import MAC.Exception
 
@@ -29,12 +28,13 @@ toLabeled = joinMAC
    Computing a value from public and secret information
 -}
 example1 :: MAC L (Labeled H String)
-example1 = do ll <- low                -- This sets the current label here to L
-              l  <- unlabel ll
-              joinMAC $ do hh <- high  -- This set the current label here to H
-                           h  <- unlabel hh
-                           return (l ++ h)
-
+example1 = do
+    ll <- low -- This sets the current label here to L
+    l <- unlabel ll
+    joinMAC $ do
+        hh <- high -- This set the current label here to H
+        h <- unlabel hh
+        return (l ++ h)
 
 {-
    In the next example, if we write the line
@@ -54,21 +54,24 @@ example1 = do ll <- low                -- This sets the current label here to L
      - giving the type signature and use unlabel.
 -}
 example2 :: MAC L (Labeled H String)
-example2 = do hh <- example1
-              joinMAC $ do  h <- unlabel hh
-                            return (h ++ h)
+example2 = do
+    hh <- example1
+    joinMAC $ do
+        h <- unlabel hh
+        return (h ++ h)
 
 data Info = ThisException | ThatException deriving (Typeable, Show)
-instance Exception Info where
+instance Exception Info
 
 {-
    The example shows that no computation is done after an exception is thrown.
 -}
 
 example3 :: MAC L (Labeled H String)
-example3 = do example1
-              throwMAC ThatException
-              example2
+example3 = do
+    example1
+    throwMAC ThatException
+    example2
 
 {-
    Throwing an execption!
@@ -83,9 +86,10 @@ example4strict :: MAC L Int
 example4strict = return $! 5 `div` 0
 
 example5 :: MAC L Int
-example5 = catchMAC
-                example4strict
-                (\(_e :: SomeException) -> return 42)
+example5 =
+    catchMAC
+        example4strict
+        (\(_e :: SomeException) -> return 42)
 
 {-
    An exception can be returned, but not triggered, i.e., an asynchronous
@@ -93,37 +97,40 @@ example5 = catchMAC
    member.
 -}
 example6 :: MAC L Int
-example6 = catchMAC
-                example4
-                (\(_e :: SomeException) -> return 42)
-           >>= \_ -> return 10
+example6 =
+    catchMAC
+        example4
+        (\(_e :: SomeException) -> return 42)
+        >>= \_ -> return 10
 
 {-
    The exception gets triggered in this case.
 -}
 example6_1 :: MAC L Int
-example6_1 = catchMAC
-                (error "chau")
-                (\(_e :: SomeException) -> return 42)
-
+example6_1 =
+    catchMAC
+        (error "chau")
+        (\(_e :: SomeException) -> return 42)
 
 {-
    The exception gets caught.
 -}
 example7 :: MAC L Int
-example7 = catchMAC
-                ( example3 >> return 1 )
-                (\(_e :: SomeException) -> return 42)
-
+example7 =
+    catchMAC
+        (example3 >> return 1)
+        (\(_e :: SomeException) -> return 42)
 
 {-
    The exception does not escape toLabeled.
 -}
 example8 :: MAC L Int
-example8 = do example1
-              toLabeled $ do _ <- high
-                             throwMAC ThatException
-              return 42
+example8 = do
+    example1
+    toLabeled $ do
+        _ <- high
+        throwMAC ThatException
+    return 42
 
 example9 :: MAC L Int
 example9 = joinMAC (high >> error "chau") >> return 10

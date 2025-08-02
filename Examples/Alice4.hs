@@ -1,11 +1,12 @@
-{-# LANGUAGE Unsafe #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE Unsafe #-}
+
 module Examples.Alice4 where
 
-import MAC.Lattice
+import Examples.MACWget
 import MAC.Core
 import MAC.Labeled
-import Examples.MACWget
+import MAC.Lattice
 
 import Data.Bits
 
@@ -18,15 +19,16 @@ import qualified Examples.Bob4 as Bob
 
 password :: IO String
 password = do
-  wgetMem <- runMAC $ Bob.memMAC wgetMAC
-  try wgetMem
+    wgetMem <- runMAC $ Bob.memMAC wgetMAC
+    try wgetMem
 
 try wget = do
-  putStr "Please, select your password:"
-  pass <- getLine
-  lbool <- runMAC $ Bob.common_pass wget =<< (label pass :: MAC L (Labeled H String))
-  let MkId b = unRes lbool
-  if b then do
-      putStrLn "Your password is too common!"
-      try wget
-    else return pass
+    putStr "Please, select your password:"
+    pass <- getLine
+    lbool <- runMAC $ Bob.commonPass wget =<< (label pass :: MAC L (Labeled H String))
+    let MkId b = unRes lbool
+    if b
+        then do
+            putStrLn "Your password is too common!"
+            try wget
+        else return pass
