@@ -8,4 +8,4 @@ concurrency, and MVars.
 
 This repository is the accompanying code for the paper
  [Functional
- Pearl: Two can keep a secret, if one of them uses Haskell](http://www.cse.chalmers.se/~russo/publications_files/pearl-russo.pdf).
+ Pearl: Two can keep a secret, if one of them uses Haskell](https://doi.org/10.1145/2858949.2784756).
