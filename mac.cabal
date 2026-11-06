@@ -29,7 +29,7 @@ description:
         The library provides secure versions of advance programming languages
         features like references, exceptions, and concurrency. This package is
         the accompanying code for the paper
-        <http://www.cse.chalmers.se/~russo/publications_files/pearl-russo.pdf Functional Pearl: Two can keep a secret, if one of them uses Haskell>.
+        <https://doi.org/10.1145/2858949.2784756> Functional Pearl: Two can keep a secret, if one of them uses Haskell>.
 
 extra-source-files:
      GNUmakefile,
